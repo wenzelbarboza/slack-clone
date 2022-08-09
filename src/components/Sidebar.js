@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import FiberManualRecordIcon from '@mui/icons-material/FiberManualRecord';
 import CreateIcon from '@mui/icons-material/Create';
 import MessageIcon from '@mui/icons-material/Message';
@@ -11,10 +11,31 @@ import FileCopyIcon from '@mui/icons-material/FileCopy';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AddIcon from '@mui/icons-material/Add';
+import db from './firebase';
+import { collection, doc, onSnapshot } from "firebase/firestore";
 import './Sidebar.css'
 import SidebarOption from './SidebarOption';
 
+
+
 const Sidebar = () => {
+    const [channels, setChannels] = useState([])
+
+    useEffect(() => {
+        const unsub = onSnapshot(collection(db, "room"), (snapShot) => {
+            console.log(snapShot)
+            setChannels(snapShot.docs.map(doc => (
+                {
+                    id: doc.id,
+                    name: doc.data().name
+                }
+            )))
+        });
+
+    }, [])
+
+    console.log("channel ", channels)
+
     return (
         <div className='sidebar'>
             <div className="sidebar__header">
@@ -39,6 +60,11 @@ const Sidebar = () => {
             <SidebarOption Icon={ExpandMoreIcon} text='chat name' />
             <hr />
             <SidebarOption Icon={AddIcon} text='chat name' />
+            {
+                channels.map(channel => (
+                    <SidebarOption text={channel.name} id={channel.id} />
+                ))
+            }
 
         </div>
     )
