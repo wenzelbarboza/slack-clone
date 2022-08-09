@@ -22,7 +22,7 @@ const Sidebar = () => {
     const [channels, setChannels] = useState([])
 
     useEffect(() => {
-        const unsub = onSnapshot(collection(db, "room"), (snapShot) => {
+        onSnapshot(collection(db, "room"), (snapShot) => {
             console.log(snapShot)
             setChannels(snapShot.docs.map(doc => (
                 {
@@ -59,7 +59,7 @@ const Sidebar = () => {
             <hr />
             <SidebarOption Icon={ExpandMoreIcon} text='chat name' />
             <hr />
-            <SidebarOption Icon={AddIcon} text='chat name' />
+            <SidebarOption Icon={AddIcon} addChannelOption text='chat name' />
             {
                 channels.map(channel => (
                     <SidebarOption text={channel.name} id={channel.id} />
