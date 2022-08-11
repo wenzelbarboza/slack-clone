@@ -7,19 +7,28 @@ import {
   Route,
 } from "react-router-dom";
 import Chat from './Chat';
+import { useState } from 'react';
+import Login from './Login';
 
 function App() {
+  const [user, setUser] = useState(true)
+
   return (
     <BrowserRouter>
       <div className="App">
-        <Header />
-        <div className="app__body">
-          <Sidebar />
-          <Routes>
-            <Route path='/room/:roomId' element={<Chat />} ></Route>
-            {/* <Route path='/' element={ } ></Route> */}
-          </Routes>
-        </div>
+        {!user ?
+          <Login /> :
+          <>
+            <Header />
+            <div className="app__body">
+              <Sidebar />
+              <Routes>
+                <Route path='/room/:roomId' element={<Chat />} ></Route>
+                {/* <Route path='/' element={ } ></Route> */}
+              </Routes>
+            </div>
+          </>
+        }
       </div>
     </BrowserRouter>
   );

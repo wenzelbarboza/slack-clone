@@ -6,24 +6,27 @@ import { query, orderBy, collection, collectionGroup } from "firebase/firestore"
 import './Chat.css'
 import { doc, onSnapshot } from 'firebase/firestore';
 import db from './firebase';
+import Message from './Message';
 
 const Chat = () => {
     const { roomId } = useParams()
-    const [roomDetails, setRoomDetails] = useState()
+    const [roomDetails, setRoomDetails] = useState(null)
+    const [roomMessages, setroomMessages] = useState([])
     const messagesRef = collection(db, 'room', roomId, 'messages')
 
     useEffect(() => {
         if (roomId) {
             onSnapshot(doc(db, "room", roomId), (snapshot) => {
-                setRoomDetails(snapshot)
+                setRoomDetails(snapshot.data())
             })
         }
 
         onSnapshot(query(messagesRef, orderBy("timeStamp", 'asc')), (snapShot => {
-            snapShot.forEach(doc => console.log(doc.data()))
+            setroomMessages(snapShot.docs.map(doc => doc.data()))
         }))
     }, [roomId])
 
+    console.log('messages>>>>>>', roomMessages)
 
     return (
         <div className='Chat'>
@@ -40,6 +43,23 @@ const Chat = () => {
                         Details
                     </p>
                 </div>
+            </div>
+            <div className="chat__messages">
+                {/* render the messages */}
+                {
+                    roomMessages.map(({ userMessage, userImage, userName, timeStamp }) => (
+                        <Message
+
+                            key={Math.random * 30}
+
+                            user={userName}
+                            image={userImage}
+                            timeStamp={timeStamp}
+                            message={userMessage}
+                        />
+                    )
+                    )
+                }
             </div>
         </div>
     )

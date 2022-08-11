@@ -62,7 +62,7 @@ const Sidebar = () => {
             <SidebarOption Icon={AddIcon} addChannelOption text='chat name' />
             {
                 channels.map(channel => (
-                    <SidebarOption text={channel.name} id={channel.id} />
+                    <SidebarOption text={channel.name} id={channel.id} key={channel.id} />
                 ))
             }
 
