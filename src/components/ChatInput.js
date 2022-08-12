@@ -1,12 +1,26 @@
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import React, { useState } from 'react'
 import './ChatInput.css'
+import db from './firebase'
+import { useStateValue } from '../context/StateProvider'
 
 const ChatInput = ({ channelName, roomId }) => {
 
     const [input, setInput] = useState('')
+    const [{ user }, dispatch] = useStateValue();
 
     const submitHandler = e => {
         e.preventDefault();
+        console.log("inside submit")
+        if (roomId) {
+            addDoc(collection(db, 'room', roomId, 'messages'), {
+                userMessage: input,
+                timeStamp: serverTimestamp(),
+                userName: user.displayName,
+                userImage: user.photoURL,
+            })
+        }
+        setInput('')
 
     }
 
