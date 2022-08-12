@@ -7,6 +7,7 @@ import './Chat.css'
 import { doc, onSnapshot } from 'firebase/firestore';
 import db from './firebase';
 import Message from './Message';
+import ChatInput from './ChatInput';
 
 const Chat = () => {
     const { roomId } = useParams()
@@ -60,6 +61,9 @@ const Chat = () => {
                     )
                     )
                 }
+            </div>
+            <div className="chat__input">
+                <ChatInput channelName={roomDetails?.name} roomId={roomId}></ChatInput>
             </div>
         </div>
     )

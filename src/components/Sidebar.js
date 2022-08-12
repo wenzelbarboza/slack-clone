@@ -15,11 +15,13 @@ import db from './firebase';
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import './Sidebar.css'
 import SidebarOption from './SidebarOption';
+import { useStateValue } from '../context/StateProvider';
 
 
 
 const Sidebar = () => {
     const [channels, setChannels] = useState([])
+    const [{ user }] = useStateValue()
 
     useEffect(() => {
         onSnapshot(collection(db, "room"), (snapShot) => {
@@ -43,7 +45,7 @@ const Sidebar = () => {
                     <h2>name</h2>
                     <h3>
                         <FiberManualRecordIcon />
-                        wenzel
+                        {user?.displayName}
                     </h3>
                 </div>
                 <CreateIcon />

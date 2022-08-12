@@ -1,13 +1,23 @@
 import React from 'react'
 import { Button } from '@mui/material'
 import './Login.css'
-import { signInWithRedirect } from 'firebase/auth'
+import { signInWithPopup } from 'firebase/auth'
 import { auth, provider } from './firebase'
+import { useStateValue } from '../context/StateProvider'
+import { actionType } from '../context/reducer'
 
 const Login = () => {
+    const [state, dispatch] = useStateValue()
+
     const googleSignInHandler = () => {
-        signInWithRedirect(auth, provider)
-            .then(res => console.log(res))
+        signInWithPopup(auth, provider)
+            .then(res => {
+                console.log(res.user)
+                dispatch({
+                    type: actionType.SET_USER,
+                    user: res.user
+                })
+            })
             .catch(err => console.log('this is err', err.message))
     }
 

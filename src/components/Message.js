@@ -1,6 +1,5 @@
 import { Timestamp } from 'firebase/firestore'
 import React from 'react'
-import { Button } from '@mui/material'
 import './Message.css'
 
 const Message = ({ message, user, image, timeStamp }) => {

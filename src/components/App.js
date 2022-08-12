@@ -9,9 +9,11 @@ import {
 import Chat from './Chat';
 import { useState } from 'react';
 import Login from './Login';
+import { useStateValue } from '../context/StateProvider';
 
 function App() {
-  const [user, setUser] = useState(true)
+  const [{ user }, dispatch] = useStateValue()
+  console.log("working")
 
   return (
     <BrowserRouter>
